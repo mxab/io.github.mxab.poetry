@@ -24,10 +24,10 @@ class PoetryPluginFunctionalTest {
         """)
         projectDir.resolve("pyproject.toml").writeText("""
             [tool.poetry]
-            name = "bert"
+            name = "function-test"
             version = "0.1.0"
             description = ""
-            authors = ["Max Fröhlich <maxbruchmann@gmail.com>"]
+            authors = ["John Doe <john.doe@example.com>"]
             
             [tool.poetry.dependencies]
             python = "^3.6"
@@ -38,7 +38,11 @@ class PoetryPluginFunctionalTest {
             requires = ["poetry>=0.12"]
             build-backend = "poetry.masonry.api"
         """)
-
+        val moduleDir = File(projectDir,"function_test")
+        moduleDir.mkdirs()
+        moduleDir.resolve("__init__.py").writeText ("""
+            __version__ = "0.1.0"
+        """)
 
         // Run the build
         val runner = GradleRunner.create()
