@@ -3,14 +3,15 @@
  */
 package io.github.mxab.poetry
 
-import java.io.File
 import org.gradle.testkit.runner.GradleRunner
+import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 
 class PoetryPluginFunctionalTest {
-    @Test fun `can run poetry install`() {
+    @Test
+    fun `can run poetry install`() {
         // Setup the test build
         val projectDir = File("build/functionalTest")
         projectDir.mkdirs()
@@ -36,9 +37,9 @@ class PoetryPluginFunctionalTest {
             requires = ["poetry>=0.12"]
             build-backend = "poetry.masonry.api"
         """)
-        val moduleDir = File(projectDir,"function_test")
+        val moduleDir = File(projectDir, "function_test")
         moduleDir.mkdirs()
-        moduleDir.resolve("__init__.py").writeText ("""
+        moduleDir.resolve("__init__.py").writeText("""
             __version__ = "0.1.0"
         """)
 
@@ -51,6 +52,6 @@ class PoetryPluginFunctionalTest {
         val result = runner.build()
 
         // Verify the result
-        assertTrue(result.output.contains("Installing"))
+        assertTrue(result.output.contains("Installing function-test (0.1.0)"))
     }
 }
