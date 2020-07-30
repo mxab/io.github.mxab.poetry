@@ -5,18 +5,39 @@ package io.github.mxab.poetry
 
 import org.gradle.testfixtures.ProjectBuilder
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-/**
- * A simple unit test for the 'io.github.mxab.poetry.greeting' plugin.
- */
+
 class PoetryPluginTest {
-    @Test fun `plugin registers task`() {
+    @Test
+    fun `plugin registers task`() {
         // Create a test project and apply the plugin
         val project = ProjectBuilder.builder().build()
         project.plugins.apply("io.github.mxab.poetry")
 
         // Verify the result
         assertNotNull(project.tasks.findByName("poetryInstall"))
+    }
+
+
+    @Test
+    fun `plugin registers extension`() {
+        // Create a test project and apply the plugin
+        val project = ProjectBuilder.builder().build()
+        project.plugins.apply("io.github.mxab.poetry")
+
+        // Verify the result
+        assertNotNull(project.extensions.findByName("poetry"))
+        assertNotNull(project.extensions.findByType(PoetryExtension::class.java))
+    }
+
+    @Test
+    fun `extension poetryExec default`() {
+        val project = ProjectBuilder.builder().build()
+        project.plugins.apply("io.github.mxab.poetry")
+
+        assertEquals("poetry", project.extensions.findByType(PoetryExtension::class.java)!!.poetryExec.get())
+
     }
 }

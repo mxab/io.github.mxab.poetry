@@ -3,16 +3,15 @@
  */
 package io.github.mxab.poetry
 
-import java.io.File
 import org.gradle.testkit.runner.GradleRunner
+import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-/**
- * A simple functional test for the 'io.github.mxab.poetry.greeting' plugin.
- */
+
 class PoetryPluginFunctionalTest {
-    @Test fun `can run task`() {
+    @Test
+    fun `can run poetry install`() {
         // Setup the test build
         val projectDir = File("build/functionalTest")
         projectDir.mkdirs()
@@ -24,10 +23,10 @@ class PoetryPluginFunctionalTest {
         """)
         projectDir.resolve("pyproject.toml").writeText("""
             [tool.poetry]
-            name = "bert"
+            name = "function-test"
             version = "0.1.0"
             description = ""
-            authors = ["Max Fröhlich <maxbruchmann@gmail.com>"]
+            authors = ["John Doe <john.doe@example.com>"]
             
             [tool.poetry.dependencies]
             python = "^3.6"
@@ -38,7 +37,11 @@ class PoetryPluginFunctionalTest {
             requires = ["poetry>=0.12"]
             build-backend = "poetry.masonry.api"
         """)
-
+        val moduleDir = File(projectDir, "function_test")
+        moduleDir.mkdirs()
+        moduleDir.resolve("__init__.py").writeText("""
+            __version__ = "0.1.0"
+        """)
 
         // Run the build
         val runner = GradleRunner.create()
@@ -46,9 +49,9 @@ class PoetryPluginFunctionalTest {
         runner.withPluginClasspath()
         runner.withArguments("poetryInstall")
         runner.withProjectDir(projectDir)
-        val result = runner.build();
+        val result = runner.build()
 
         // Verify the result
-        assertTrue(result.output.contains("Installing"))
+        assertTrue(result.output.contains("Installing function-test (0.1.0)"))
     }
 }

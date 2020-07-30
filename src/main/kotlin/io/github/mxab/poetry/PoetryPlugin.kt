@@ -3,19 +3,29 @@
  */
 package io.github.mxab.poetry
 
-import org.gradle.api.Project
+import PoetryTask
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-/**
- * A simple 'hello world' plugin.
- */
-class PoetryPlugin: Plugin<Project> {
+class PoetryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        // Register a task
-        project.tasks.register("poetryInstall") { task ->
-            task.doLast {
-                println("Installing")
-            }
+
+        val extension = project.extensions.create("poetry", PoetryExtension::class.java)
+        project.tasks.register("poetryInstall", PoetryTask::class.java) { task ->
+            task.args.add("install")
+            task.poetryExec.convention(extension.poetryExec)
         }
+
+//        val stream = ByteArrayOutputStream()
+//        project.exec {
+//            it.executable = "poetry"
+//            it.args("env","info", "--path")
+//            it.standardOutput = stream
+//        }
+//        val envPath = String(stream.toByteArray())
+//
+//        println(envPath)
+
+
     }
 }
