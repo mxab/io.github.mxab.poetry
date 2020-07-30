@@ -8,11 +8,9 @@ import org.gradle.testkit.runner.GradleRunner
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-/**
- * A simple functional test for the 'io.github.mxab.poetry.greeting' plugin.
- */
+
 class PoetryPluginFunctionalTest {
-    @Test fun `can run task`() {
+    @Test fun `can run poetry install`() {
         // Setup the test build
         val projectDir = File("build/functionalTest")
         projectDir.mkdirs()
@@ -50,7 +48,7 @@ class PoetryPluginFunctionalTest {
         runner.withPluginClasspath()
         runner.withArguments("poetryInstall")
         runner.withProjectDir(projectDir)
-        val result = runner.build();
+        val result = runner.build()
 
         // Verify the result
         assertTrue(result.output.contains("Installing"))
